@@ -7,6 +7,8 @@ public class Response
     public static final Response OK = new Response(Status.OK);
     public static final Response FAILED = new Response(Status.FAILED);
     public static final Response USER_EXISTS = new Response(Status.USER_EXISTS);
+    public static final Response COURSE_ADDED = new Response(Status.COURSE_ADDED);
+    public static final Response COURSE_DELETED = new Response(Status.COURSE_DELETED);
 
     public Response(Status status)
     {
@@ -15,7 +17,7 @@ public class Response
 
     private enum Status
     {
-        OK, FAILED, USER_EXISTS
+        OK, FAILED, USER_EXISTS, COURSE_ADDED, COURSE_DELETED
     }
 
     public Status getStatus()

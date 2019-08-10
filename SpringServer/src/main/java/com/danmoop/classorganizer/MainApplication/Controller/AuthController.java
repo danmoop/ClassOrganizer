@@ -37,9 +37,9 @@ public class AuthController
         if (userDatabase.findByUsername(user.getUsername()) == null)
         {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setCourses(new ArrayList<>());
 
-            userDatabase.save(user);
+            User userForSaving = new User(user.getUsername(), user.getSchoolName(), user.getPassword(), user.getEmail());
+            userDatabase.save(userForSaving);
 
             return Response.OK;
         }

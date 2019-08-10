@@ -18,7 +18,7 @@ public class Config extends WebSecurityConfigurerAdapter
     @Autowired
     private MongoUserDetailsService userDetailsService;
 
-    private final String[] urls = {"/login", "/user"};
+    private final String[] urls = {"/login", "/user", "/addCourse"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception

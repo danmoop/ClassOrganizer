@@ -1,0 +1,26 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-card {
+  max-width: 50%;
+  margin: 0px auto;
+  margin-top: 5rem;
+}
+
+.container {
+  width: 66.6%;
+  margin: 0px auto;
+}
+
+.row {
+  display: inline-flex;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.center {
+    margin: 0px auto;
+}

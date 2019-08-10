@@ -21,7 +21,9 @@ public class User
     private String password;
     private String email;
 
-    private List<Course> courses;
+    private List<Course> currentCourses;
+    private List<Course> completedCourses;
+    private List<Course> allCourses;
 
     public User(String username, String schoolName, String password, String email)
     {
@@ -30,6 +32,8 @@ public class User
         this.password = password;
         this.email = email;
 
-        this.courses = new ArrayList<>();
+        this.currentCourses = new ArrayList<>();
+        this.completedCourses = new ArrayList<>();
+        this.allCourses = new ArrayList<>();
     }
 }

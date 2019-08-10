@@ -1,5 +1,87 @@
-<p>
-  dashboard-page works!
+<!DOCTYPE html>
+<html lang="en">
 
-  <button (click)="logOut();">logOut</button>
-</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ClassOrganizer - Dashboard</title>
+</head>
+
+<body>
+
+  <mat-toolbar color="primary">
+    <span>{{ user.username }}</span>
+    <span class="example-spacer"></span>
+    <a mat-button (click)="logOut();">Logout</a>
+  </mat-toolbar>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Your current courses</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p *ngIf="user.currentCourses.length == 0">You have any courses added yet</p>
+      <ul>
+        <li *ngFor="let course of user.currentCourses">{{ course }}</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="warn" *ngIf="user.currentCourses.length != 0">EDIT</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Completed courses</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p *ngIf="user.completedCourses.length == 0">You have any completed courses added yet</p>
+      <ul>
+        <li *ngFor="let course of user.completedCourses">{{ course }}</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="warn" *ngIf="user.completedCourses.length != 0">EDIT</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>All your courses</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p *ngIf="user.allCourses.length == 0">You have any courses added yet</p>
+      <ul>
+        <li *ngFor="let course of user.allCourses">{{ course.codeName }} | {{ course.units }} units | {{ course.isMajor ? 'Major' : 'Non-Major' }}</li>
+      </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" (click)="toggleAddingCourse();">ADD</button>
+      <button mat-button color="warn">EDIT</button>
+    </mat-card-actions>
+
+    <div class="addCourseContainer" *ngIf="isAddingCourse">
+      <hr>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Course full name" [(ngModel)]="courseName">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Course code name" [(ngModel)]="courseCode">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Course units" type="number" [(ngModel)]="courseUnits">
+      </mat-form-field>
+      <br>
+      <mat-checkbox class="example-margin" [(ngModel)]="isCourseMajor">Is Major?</mat-checkbox>
+      <br>
+      <button mat-button color="primary" (click)="addCourse();">ADD</button>
+    </div>
+  </mat-card>
+
+  {{ userData }}
+</body>
+
+</html>

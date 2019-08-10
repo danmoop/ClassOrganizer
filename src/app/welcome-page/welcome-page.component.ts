@@ -42,8 +42,14 @@ export class WelcomePageComponent implements OnInit {
 
     axios.post(this.API + '/register', user)
       .then(response => {
-        this.registered = true;
-        this.openSnackBar('Successfully registered!');
+
+        if(response.data.status == 'OK') {
+          this.registered = true;
+          this.openSnackBar('Successfully registered!');
+        } else {
+          this.openSnackBar('User with such username already exists!');
+        }
+
       });
   }
 
