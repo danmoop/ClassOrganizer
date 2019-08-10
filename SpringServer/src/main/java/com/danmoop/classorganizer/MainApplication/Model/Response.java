@@ -6,6 +6,7 @@ public class Response
 
     public static final Response OK = new Response(Status.OK);
     public static final Response FAILED = new Response(Status.FAILED);
+    public static final Response USER_EXISTS = new Response(Status.USER_EXISTS);
 
     public Response(Status status)
     {
@@ -14,7 +15,7 @@ public class Response
 
     private enum Status
     {
-        OK, FAILED
+        OK, FAILED, USER_EXISTS
     }
 
     public Status getStatus()

@@ -10,9 +10,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardPageComponent,
+    WelcomePageComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule,
     MatCheckboxModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

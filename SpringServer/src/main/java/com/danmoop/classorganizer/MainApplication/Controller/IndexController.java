@@ -1,19 +1,19 @@
 package com.danmoop.classorganizer.MainApplication.Controller;
 
-import com.danmoop.classorganizer.MainApplication.Model.Data;
+import com.danmoop.classorganizer.MainApplication.Database.UserDatabase;
 import com.danmoop.classorganizer.MainApplication.Model.Response;
-import com.danmoop.classorganizer.MainApplication.Service.StringService;
+import com.danmoop.classorganizer.MainApplication.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
 public class IndexController
 {
     @Autowired
-    private StringService stringService;
+    private UserDatabase userDatabase;
 
     @GetMapping("/")
     public Response response()
@@ -21,25 +21,9 @@ public class IndexController
         return Response.OK;
     }
 
-    @GetMapping("/list")
-    public List<String> getList()
+    @RequestMapping("/user")
+    public User user(Principal principal)
     {
-        return stringService.getStrings();
-    }
-
-    @PostMapping("/add")
-    public List<String> insertToList(@RequestBody Data s)
-    {
-        stringService.add((String) s.getData());
-
-        return stringService.getStrings();
-    }
-
-    @PostMapping("/remove")
-    public List<String> removeFromList(@RequestBody Data s)
-    {
-        stringService.getStrings().remove(s.getData());
-
-        return stringService.getStrings();
+        return userDatabase.findByUsername(principal.getName());
     }
 }

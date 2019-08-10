@@ -1,0 +1,45 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+
+  <div class="container" *ngIf="registered">
+    <h2>Sign in</h2>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Username" [(ngModel)]="username">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Password" type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <br>
+
+    <button mat-raised-button color="primary" (click)="login(false);">Login</button>
+    <hr>
+    <a mat-button (click)="toggleRegisterWindow();">Create an account</a>
+  </div>
+
+  <div class="container" *ngIf="!registered">
+    <h2>Register</h2>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Username" [(ngModel)]="username">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Schoolname" [(ngModel)]="schoolName">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Email" type="email" [(ngModel)]="email">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Password" type="password" [(ngModel)]="password">
+    </mat-form-field>
+    <br>
+
+    <button mat-raised-button color="primary" (click)="register();">Register</button>
+    <hr>
+    <a mat-button (click)="toggleRegisterWindow();">Registered? Sign in!</a>
+  </div>
+</div>
