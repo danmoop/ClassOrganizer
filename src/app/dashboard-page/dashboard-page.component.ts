@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  Router
+} from '@angular/router';
 import axios from 'axios';
+import {
+  MatSnackBar
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -9,7 +17,7 @@ import axios from 'axios';
 })
 export class DashboardPageComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
 
   API = 'http://localhost:1337';
   user: any;
@@ -21,9 +29,10 @@ export class DashboardPageComponent implements OnInit {
   courseCode = "";
   courseUnits = 1;
   isCourseMajor = false;
+  isEditingCourse = false;
 
   ngOnInit() {
-    if(localStorage.getItem('token') == null) {
+    if (localStorage.getItem('token') == null) {
       this.logOut();
     } else {
       axios(this.API + '/login', {
@@ -56,21 +65,57 @@ export class DashboardPageComponent implements OnInit {
     this.isAddingCourse = !this.isAddingCourse;
   }
 
+  toggleEditingCourse() {
+    this.isEditingCourse = !this.isEditingCourse;
+  }
+
   addCourse() {
-    var course = {
-      name: this.courseName,
-      codeName: this.courseCode,
-      units: this.courseUnits,
-      isMajor: this.isCourseMajor
+    if (this.courseName && this.courseCode) {
+      var course = {
+        name: this.courseName,
+        codeName: this.courseCode,
+        units: this.courseUnits,
+        major: this.isCourseMajor
+      }
+
+      this.user.allCourses.push(course);
+      this.toggleAddingCourse();
+
+      this.courseCode = "";
+      this.courseName = "";
+      this.isCourseMajor = false;
+      this.courseUnits = 1;
+
+      axios(this.API + '/addCourse', {
+        method: 'post',
+        auth: this.getAuth(),
+        data: course
+      }).then(response => {
+        if (response.data.status == 'COURSE_ADDED') {
+          this.openSnackBar('Successfully added!');
+        }
+      });
     }
+  }
 
-    this.userData = JSON.stringify(course);
+  deleteCourse(course) {
+    var index = this.user.allCourses.indexOf(course);
+    this.user.allCourses.splice(index, 1);
 
-    this.user.allCourses.push(course);
+    axios(this.API + '/deleteCourse', {
+      method: 'post',
+      auth: this.getAuth(),
+      data: course
+    }).then(response => {
+      if(response.data.status == 'COURSE_DELETED') {
+        this.openSnackBar('Course has been deleted!');
+      }
+    });
+  }
 
-    console.log(this.user);
-
-    this.toggleAddingCourse();
-    console.log(course);
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'OK', {
+      duration: 1500
+    });
   }
 }

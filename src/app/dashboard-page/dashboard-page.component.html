@@ -11,7 +11,12 @@
 <body>
 
   <mat-toolbar color="primary">
+    <mat-icon aria-hidden="false" aria-label="Example home icon">account_circle</mat-icon>
     <span>{{ user.username }}</span>
+
+    <mat-icon aria-hidden="false" aria-label="Example home icon" style="margin-left: 30px;">school</mat-icon>
+    <span> {{ user.schoolName }}</span>
+    
     <span class="example-spacer"></span>
     <a mat-button (click)="logOut();">Logout</a>
   </mat-toolbar>
@@ -52,13 +57,24 @@
     </mat-card-header>
     <mat-card-content>
       <p *ngIf="user.allCourses.length == 0">You have any courses added yet</p>
-      <ul>
-        <li *ngFor="let course of user.allCourses">{{ course.codeName }} | {{ course.units }} units | {{ course.isMajor ? 'Major' : 'Non-Major' }}</li>
-      </ul>
+      <ol>
+        <li *ngFor="let course of user.allCourses">
+          {{ course.name }} | {{ course.codeName }} | {{ course.units }} units | {{ course.major ? 'Major' : 'Non-Major' }}
+          <button mat-stroked-button color="primary" *ngIf="isEditingCourse">
+              <mat-icon aria-hidden="false" aria-label="Example home icon">check_circle_outline</mat-icon>
+            Complete</button>
+          <button mat-stroked-button color="basic" *ngIf="isEditingCourse">
+              <mat-icon aria-hidden="false" aria-label="Example home icon">add_circle_outline</mat-icon>
+            Take</button>
+          <button mat-stroked-button color="warn" (click)="deleteCourse(course);" *ngIf="isEditingCourse">
+              <mat-icon aria-hidden="false" aria-label="Example home icon">delete_outline</mat-icon>
+            Delete</button>
+        </li>
+      </ol>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button color="primary" (click)="toggleAddingCourse();">ADD</button>
-      <button mat-button color="warn">EDIT</button>
+      <button mat-button color="warn" (click)="toggleEditingCourse();">EDIT</button>
     </mat-card-actions>
 
     <div class="addCourseContainer" *ngIf="isAddingCourse">
@@ -81,7 +97,7 @@
     </div>
   </mat-card>
 
-  {{ userData }}
+  <!-- {{ userData }} -->
 </body>
 
 </html>

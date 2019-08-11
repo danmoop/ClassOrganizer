@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@Document(value = "Users")
+@Document(value = "users")
 public class User
 {
     @Id

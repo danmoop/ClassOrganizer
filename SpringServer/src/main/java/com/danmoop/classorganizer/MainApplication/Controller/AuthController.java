@@ -30,10 +30,8 @@ public class AuthController
     }
 
     @PostMapping("/register")
-    public Response isRegistered(@RequestBody Object userData)
+    public Response isRegistered(@RequestBody User user)
     {
-        User user = objectMapper.convertValue(userData, User.class);
-
         if (userDatabase.findByUsername(user.getUsername()) == null)
         {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

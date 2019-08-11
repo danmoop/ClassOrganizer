@@ -30,4 +30,16 @@ public class DashboardController
 
         return Response.COURSE_ADDED;
     }
+
+    @PostMapping("/deleteCourse")
+    public Response deleteCourse(@RequestBody Course course, Principal principal)
+    {
+        User user = userDatabase.findByUsername(principal.getName());
+
+        user.getAllCourses().remove(course);
+
+        userDatabase.save(user);
+
+        return Response.COURSE_DELETED;
+    }
 }
