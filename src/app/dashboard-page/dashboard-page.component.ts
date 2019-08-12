@@ -10,7 +10,9 @@ import axios from 'axios';
 import {
   MatSnackBar
 } from '@angular/material/snack-bar';
-import { MatTable } from '@angular/material/table';
+import {
+  MatTable
+} from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -36,10 +38,10 @@ export class DashboardPageComponent implements OnInit {
   displayedColumnsEditableCourses: string[] = ['Name', 'Code', 'Units', 'Type', 'Action'];
   displayedColumnsNonEditableCourses: string[] = ['Name', 'Code', 'Units', 'Type'];
 
-  @ViewChild('allCoursesTable') allCoursesTable: MatTable<any>;
-  @ViewChild('currentCoursesTable') currentCoursesTable: MatTable<any>;
-  @ViewChild('completedCoursesTable') completedCoursesTable: MatTable<any>;
-  
+  @ViewChild('allCoursesTable') allCoursesTable: MatTable < any > ;
+  @ViewChild('currentCoursesTable') currentCoursesTable: MatTable < any > ;
+  @ViewChild('completedCoursesTable') completedCoursesTable: MatTable < any > ;
+
   ngOnInit() {
     if (localStorage.getItem('token') == null) {
       this.logOut();
@@ -87,7 +89,7 @@ export class DashboardPageComponent implements OnInit {
         major: this.isCourseMajor
       }
 
-      this.user.allCourses.push(course);
+      this.user.allCourses.unshift(course);
       this.toggleAddingCourse();
 
       this.courseCode = "";
@@ -104,43 +106,45 @@ export class DashboardPageComponent implements OnInit {
           this.openSnackBar('Successfully added!');
         }
       });
+
+      this.allCoursesTable.renderRows();
     }
   }
 
   takeCourse(course) {
     this.user.allCourses.splice(this.user.allCourses.indexOf(course), 1);
-    this.user.currentCourses.push(course);
-
-    this.allCoursesTable.renderRows();
-    this.currentCoursesTable.renderRows();
+    this.user.currentCourses.unshift(course);
 
     axios(this.API + '/takeCourse', {
       method: 'post',
       auth: this.getAuth(),
       data: course
     }).then(response => {
-      if(response.data.status == 'COURSE_TRANSFERRED') {
+      if (response.data.status == 'COURSE_TRANSFERRED') {
         this.openSnackBar('Success!');
       }
     });
+
+    this.allCoursesTable.renderRows();
+    this.currentCoursesTable.renderRows();
   }
 
   completeCourse(course) {
     this.user.currentCourses.splice(this.user.currentCourses.indexOf(course), 1);
-    this.user.completedCourses.push(course);
-
-    this.currentCoursesTable.renderRows();
-    this.completedCoursesTable.renderRows();
+    this.user.completedCourses.unshift(course);
 
     axios(this.API + '/completeCourse', {
       method: 'post',
       auth: this.getAuth(),
       data: course
     }).then(response => {
-      if(response.data.status == 'COURSE_TRANSFERRED') {
+      if (response.data.status == 'COURSE_TRANSFERRED') {
         this.openSnackBar('Success!');
       }
     });
+
+    this.currentCoursesTable.renderRows();
+    this.completedCoursesTable.renderRows();
   }
 
   deleteCourse(course) {
@@ -151,7 +155,7 @@ export class DashboardPageComponent implements OnInit {
       auth: this.getAuth(),
       data: course
     }).then(response => {
-      if(response.data.status == 'COURSE_DELETED') {
+      if (response.data.status == 'COURSE_DELETED') {
         this.openSnackBar('Course has been deleted!');
       }
     });
@@ -198,5 +202,41 @@ export class DashboardPageComponent implements OnInit {
 
   calculateUnitsPerSem() {
     return ((this.calculateAllCoursesUnits() + this.calculateCurrentCoursesUnits()) / this.user.semestersLeft).toFixed(2);
+  }
+
+  sortAllCourses() {
+    //bubble sort implemented
+    if (this.isAllCoursesSorted()) {
+      this.user.allCourses = this.user.allCourses.reverse();
+    } else {
+      for (var i = this.user.allCourses.length - 1; i > 0; i--) {
+        for (var j = 0; j < i; j++) {
+          if (this.user.allCourses[j].units > this.user.allCourses[j + 1].units) {
+            this.swapCourses(this.user.allCourses, j, j + 1);
+          }
+        }
+      }
+    }
+    this.allCoursesTable.renderRows();
+  }
+
+  swapCourses(courses, courseIndex1, courseIndex2) {
+    var temp = courses[courseIndex1];
+
+    courses[courseIndex1] = courses[courseIndex2];
+    courses[courseIndex2] = temp;
+  }
+
+  isAllCoursesSorted() {
+    var sorted = true;
+
+    for (var i = 1; i < this.user.allCourses.length; i++) {
+      if (this.user.allCourses[i].units < this.user.allCourses[i - 1].units) {
+        sorted = false;
+        break;
+      }
+    }
+
+    return sorted;
   }
 }
