@@ -21,6 +21,8 @@ public class User
     private String password;
     private String email;
 
+    private byte semestersLeft;
+
     private List<Course> currentCourses;
     private List<Course> completedCourses;
     private List<Course> allCourses;
@@ -31,6 +33,7 @@ public class User
         this.schoolName = schoolName;
         this.password = password;
         this.email = email;
+        this.semestersLeft = 6;
 
         this.currentCourses = new ArrayList<>();
         this.completedCourses = new ArrayList<>();

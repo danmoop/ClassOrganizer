@@ -49,7 +49,6 @@ export class WelcomePageComponent implements OnInit {
         } else {
           this.openSnackBar('User with such username already exists!');
         }
-
       });
   }
 

@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import {
   Router
@@ -9,6 +10,7 @@ import axios from 'axios';
 import {
   MatSnackBar
 } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -31,6 +33,13 @@ export class DashboardPageComponent implements OnInit {
   isCourseMajor = false;
   isEditingCourse = false;
 
+  displayedColumnsEditableCourses: string[] = ['Name', 'Code', 'Units', 'Type', 'Action'];
+  displayedColumnsNonEditableCourses: string[] = ['Name', 'Code', 'Units', 'Type'];
+
+  @ViewChild('allCoursesTable') allCoursesTable: MatTable<any>;
+  @ViewChild('currentCoursesTable') currentCoursesTable: MatTable<any>;
+  @ViewChild('completedCoursesTable') completedCoursesTable: MatTable<any>;
+  
   ngOnInit() {
     if (localStorage.getItem('token') == null) {
       this.logOut();
@@ -98,9 +107,44 @@ export class DashboardPageComponent implements OnInit {
     }
   }
 
+  takeCourse(course) {
+    this.user.allCourses.splice(this.user.allCourses.indexOf(course), 1);
+    this.user.currentCourses.push(course);
+
+    this.allCoursesTable.renderRows();
+    this.currentCoursesTable.renderRows();
+
+    axios(this.API + '/takeCourse', {
+      method: 'post',
+      auth: this.getAuth(),
+      data: course
+    }).then(response => {
+      if(response.data.status == 'COURSE_TRANSFERRED') {
+        this.openSnackBar('Success!');
+      }
+    });
+  }
+
+  completeCourse(course) {
+    this.user.currentCourses.splice(this.user.currentCourses.indexOf(course), 1);
+    this.user.completedCourses.push(course);
+
+    this.currentCoursesTable.renderRows();
+    this.completedCoursesTable.renderRows();
+
+    axios(this.API + '/completeCourse', {
+      method: 'post',
+      auth: this.getAuth(),
+      data: course
+    }).then(response => {
+      if(response.data.status == 'COURSE_TRANSFERRED') {
+        this.openSnackBar('Success!');
+      }
+    });
+  }
+
   deleteCourse(course) {
-    var index = this.user.allCourses.indexOf(course);
-    this.user.allCourses.splice(index, 1);
+    this.spliceCourse(course);
 
     axios(this.API + '/deleteCourse', {
       method: 'post',
@@ -113,9 +157,46 @@ export class DashboardPageComponent implements OnInit {
     });
   }
 
+  spliceCourse(course) {
+    var index = this.user.allCourses.indexOf(course);
+    this.user.allCourses.splice(index, 1);
+  }
+
   openSnackBar(message: string) {
     this.snackBar.open(message, 'OK', {
       duration: 1500
     });
+  }
+
+  calculateAllCoursesUnits() {
+    var sum = 0;
+    this.user.allCourses.forEach(element => {
+      sum += element.units;
+    });
+    return sum;
+  }
+
+  calculateCurrentCoursesUnits() {
+    var sum = 0;
+    this.user.currentCourses.forEach(element => {
+      sum += element.units;
+    });
+    return sum;
+  }
+
+  calculateCompletedCoursesUnits() {
+    var sum = 0;
+    this.user.completedCourses.forEach(element => {
+      sum += element.units;
+    });
+    return sum;
+  }
+
+  calculateAllSections() {
+    return this.calculateAllCoursesUnits() + this.calculateCompletedCoursesUnits() + this.calculateCurrentCoursesUnits();
+  }
+
+  calculateUnitsPerSem() {
+    return ((this.calculateAllCoursesUnits() + this.calculateCurrentCoursesUnits()) / this.user.semestersLeft).toFixed(2);
   }
 }

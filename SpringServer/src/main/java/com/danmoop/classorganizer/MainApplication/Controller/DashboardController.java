@@ -42,4 +42,30 @@ public class DashboardController
 
         return Response.COURSE_DELETED;
     }
+
+    @PostMapping("/takeCourse")
+    public Response takeCourse(@RequestBody Course course, Principal principal)
+    {
+        User user = userDatabase.findByUsername(principal.getName());
+
+        user.getAllCourses().remove(course);
+        user.getCurrentCourses().add(course);
+
+        userDatabase.save(user);
+
+        return Response.COURSE_TRANSFERRED;
+    }
+
+    @PostMapping("/completeCourse")
+    public Response completeCourse(@RequestBody Course course, Principal principal)
+    {
+        User user = userDatabase.findByUsername(principal.getName());
+
+        user.getCurrentCourses().remove(course);
+        user.getCompletedCourses().add(course);
+
+        userDatabase.save(user);
+
+        return Response.COURSE_TRANSFERRED;
+    }
 }

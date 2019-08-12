@@ -24,3 +24,18 @@
 .center {
     margin: 0px auto;
 }
+
+.major {
+  color: #1abc9c;
+  font-weight: bold;
+}
+
+.nonMajor {
+  color: #9b59b6;
+  font-weight: bold;
+}
+
+.table {
+  width: 70%;
+  margin: 0px auto;
+}
