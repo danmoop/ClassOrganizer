@@ -21,7 +21,7 @@ public class User
     private String password;
     private String email;
 
-    private byte semestersLeft;
+    private int semestersLeft;
 
     private List<Course> currentCourses;
     private List<Course> completedCourses;

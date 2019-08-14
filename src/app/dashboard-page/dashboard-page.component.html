@@ -22,8 +22,12 @@
   </mat-toolbar>
 
   <p class="text-center">Total units: <b>{{ calculateAllSections() }}</b></p>
-  <p class="text-center"><b>{{ user.semestersLeft }}</b> semesters left. <b>{{ calculateUnitsPerSem() }}</b> units per
-    semester.</p>
+  <p class="text-center">
+    <mat-form-field>
+      <input matInput placeholder="Semesters" [(ngModel)]="user.semestersLeft" type="number" (change)="changeSemestersAmount();">
+    </mat-form-field> 
+    semesters left. <b>{{ calculateUnitsPerSem() }}</b> units per semester.
+  </p>
   <hr>
 
   <h2 class="text-center">Current Courses ({{ calculateCurrentCoursesUnits() }} units)</h2>

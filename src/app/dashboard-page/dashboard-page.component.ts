@@ -239,4 +239,14 @@ export class DashboardPageComponent implements OnInit {
 
     return sorted;
   }
+
+  changeSemestersAmount() {
+    axios(this.API + '/changeSemestersAmount', {
+      method: 'post',
+      auth: this.getAuth(),
+      data: {
+        object: this.user.semestersLeft
+      }
+    }).then(response => {});
+  }
 }

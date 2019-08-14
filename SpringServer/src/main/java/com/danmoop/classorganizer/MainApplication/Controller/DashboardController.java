@@ -19,6 +19,10 @@ public class DashboardController
     @Autowired
     private UserDatabase userDatabase;
 
+    /**
+     * @param course is taken from client. Principal is assigned when authenticated
+     * @return response if everything is ok, add course, save to db
+     */
     @PostMapping("/addCourse")
     public Response addCourse(@RequestBody Course course, Principal principal)
     {
@@ -31,6 +35,10 @@ public class DashboardController
         return Response.COURSE_ADDED;
     }
 
+    /**
+     * @param course is taken from client. Principal is assigned when authenticated
+     * @return response if everything is ok, remove course, save to db
+     */
     @PostMapping("/deleteCourse")
     public Response deleteCourse(@RequestBody Course course, Principal principal)
     {
@@ -43,6 +51,10 @@ public class DashboardController
         return Response.COURSE_DELETED;
     }
 
+    /**
+     * @param course is taken from client. Principal is assigned when authenticated
+     * @return response if everything is ok, move course from one ArrayList to another, save to db
+     */
     @PostMapping("/takeCourse")
     public Response takeCourse(@RequestBody Course course, Principal principal)
     {
@@ -56,6 +68,10 @@ public class DashboardController
         return Response.COURSE_TRANSFERRED;
     }
 
+    /**
+     * @param course is taken from client. Principal is assigned when authenticated
+     * @return response if everything is ok, move course from one ArrayList to another, save to db
+    */
     @PostMapping("/completeCourse")
     public Response completeCourse(@RequestBody Course course, Principal principal)
     {

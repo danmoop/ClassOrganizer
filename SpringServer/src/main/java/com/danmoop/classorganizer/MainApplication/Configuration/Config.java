@@ -18,9 +18,15 @@ public class Config extends WebSecurityConfigurerAdapter
     @Autowired
     private MongoUserDetailsService userDetailsService;
 
+    /*
+        urls is an array of strings. Each string is a path
+        that will require user to authenticate. So each request
+        to add course, delete course or anything else requires
+        another authentication using username & password.
+    */
     private final String[] urls = {
             "/login", "/user", "/addCourse", "/deleteCourse",
-            "/takeCourse", "/completeCourse"
+            "/takeCourse", "/completeCourse", "/changeSemestersAmount"
     };
 
     @Override
@@ -29,11 +35,12 @@ public class Config extends WebSecurityConfigurerAdapter
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(urls).authenticated()
+                .antMatchers(urls).authenticated() // this string requires us to auth every time we send a request to specific path
                 .and()
                 .httpBasic();
     }
 
+    // This configuration linked authentication with users' data stored in mongodb database
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception
     {
@@ -41,7 +48,7 @@ public class Config extends WebSecurityConfigurerAdapter
                 .and().inMemoryAuthentication();
     }
 
-
+    // This is an encoder to store passwords in an encrypted way
     @Bean
     public PasswordEncoder passwordEncoder()
     {

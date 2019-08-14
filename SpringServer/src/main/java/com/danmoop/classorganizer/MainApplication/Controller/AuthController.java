@@ -19,12 +19,19 @@ public class AuthController
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+    * @return user instance, containing their username, pass, courses etc.
+    */
     @GetMapping("/login")
     public User user(Principal principal)
     {
         return userDatabase.findByUsername(principal.getName());
     }
 
+    /**
+     * @param user is sent from a client
+     * @return response if user with such username doesn't exist. Encode pass & save to db
+     */
     @PostMapping("/register")
     public Response isRegistered(@RequestBody User user)
     {
