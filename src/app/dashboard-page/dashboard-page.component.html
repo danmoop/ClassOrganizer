@@ -24,7 +24,7 @@
   <p class="text-center">Total units: <b>{{ calculateAllSections() }}</b></p>
   <p class="text-center">
     <mat-form-field>
-      <input matInput placeholder="Semesters" [(ngModel)]="user.semestersLeft" type="number" (change)="changeSemestersAmount();">
+      <input matInput placeholder="Semesters" [(ngModel)]="user.semestersLeft" type="number" min="1" (change)="changeSemestersAmount();">
     </mat-form-field> 
     semesters left. <b>{{ calculateUnitsPerSem() }}</b> units per semester.
   </p>

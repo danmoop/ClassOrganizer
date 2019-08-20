@@ -1,7 +1,6 @@
 package com.danmoop.classorganizer.MainApplication.Controller;
 
 import com.danmoop.classorganizer.MainApplication.Database.UserDatabase;
-import com.danmoop.classorganizer.MainApplication.Model.Data;
 import com.danmoop.classorganizer.MainApplication.Model.Response;
 import com.danmoop.classorganizer.MainApplication.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -24,21 +24,14 @@ public class UserController
      * @return response if new amount of semesters isn't out of Integer bounds. Set new number to user & save to db
     */
     @PostMapping("/changeSemestersAmount")
-    public Response changeSemestersAmount(@RequestBody Data data, Principal principal)
+    public Response changeSemestersAmount(@RequestBody Map<String, Integer> data, Principal principal)
     {
-        int semesters = (int) data.getObject();
+        User user = userDatabase.findByUsername(principal.getName());
+        int semesters = data.get("semestersAmount");
 
-        if (semesters < Integer.MAX_VALUE && semesters > Integer.MIN_VALUE)
-        {
-            User user = userDatabase.findByUsername(principal.getName());
+        user.setSemestersLeft(semesters);
+        userDatabase.save(user);
 
-            user.setSemestersLeft(semesters);
-
-            userDatabase.save(user);
-
-            return Response.OK;
-        }
-
-        return Response.FAILED;
+        return Response.OK;
     }
 }

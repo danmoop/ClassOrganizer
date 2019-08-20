@@ -245,8 +245,8 @@ export class DashboardPageComponent implements OnInit {
       method: 'post',
       auth: this.getAuth(),
       data: {
-        object: this.user.semestersLeft
+        semestersAmount: this.user.semestersLeft
       }
-    }).then(response => {});
+    }).then(response => console.log(response.data.status));
   }
 }
