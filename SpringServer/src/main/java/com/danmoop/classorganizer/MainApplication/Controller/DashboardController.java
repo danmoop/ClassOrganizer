@@ -20,6 +20,9 @@ public class DashboardController
     private UserDatabase userDatabase;
 
     /**
+     * This request is handled when user adds a course to their list
+     * The course will be saved to user's allCoursesList
+     *
      * @param course is taken from client. Principal is assigned when authenticated
      * @return response if everything is ok, add course, save to db
      */
@@ -36,6 +39,9 @@ public class DashboardController
     }
 
     /**
+     * This request is handled when user deletes a course from their list
+     * The course will be deleted and user information will be updated
+     *
      * @param course is taken from client. Principal is assigned when authenticated
      * @return response if everything is ok, remove course, save to db
      */
@@ -52,6 +58,9 @@ public class DashboardController
     }
 
     /**
+     * This request is handled when user takes a course for current semester
+     * A course will be moved to currentCourses list
+     *
      * @param course is taken from client. Principal is assigned when authenticated
      * @return response if everything is ok, move course from one ArrayList to another, save to db
      */
@@ -69,6 +78,9 @@ public class DashboardController
     }
 
     /**
+     * This request is handled when user completes a course and
+     * it is moved to completedCourses list
+     *
      * @param course is taken from client. Principal is assigned when authenticated
      * @return response if everything is ok, move course from one ArrayList to another, save to db
     */

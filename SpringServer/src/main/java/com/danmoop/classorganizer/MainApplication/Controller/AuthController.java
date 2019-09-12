@@ -29,6 +29,9 @@ public class AuthController
     }
 
     /**
+     * This request is handled when user submits their username & password
+     * User will be registered, data will be saved to database
+     *
      * @param user is sent from a client
      * @return response if user with such username doesn't exist. Encode pass & save to db
      */

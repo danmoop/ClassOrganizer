@@ -14,6 +14,11 @@ public class IndexController
     @Autowired
     private UserDatabase userDatabase;
 
+    /**
+     * This request is just for pinging
+     * So just if you want to check if server is running,
+     * you can call this request
+     */
     @GetMapping("/")
     public Response response()
     {

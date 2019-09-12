@@ -20,6 +20,9 @@ public class UserController
     private UserDatabase userDatabase;
 
     /**
+     * This request is handled when user changed the amount of their semesters
+     * A new amount of semesters will be assigned to user
+     *
      * @param data is taken from client, it contains new integer of semesters
      * @return response if new amount of semesters isn't out of Integer bounds. Set new number to user & save to db
     */
