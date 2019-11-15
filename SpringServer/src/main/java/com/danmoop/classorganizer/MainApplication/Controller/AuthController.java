@@ -11,43 +11,41 @@ import java.security.Principal;
 
 @RestController
 @CrossOrigin
-public class AuthController
-{
-    @Autowired
-    private UserDatabase userDatabase;
+@RequestMapping("/auth")
+public class AuthController {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private UserDatabase userDatabase;
 
-    /**
-    * @return user instance, containing their username, pass, courses etc.
-    */
-    @GetMapping("/login")
-    public User user(Principal principal)
-    {
-        return userDatabase.findByUsername(principal.getName());
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  /**
+   * @return user instance, containing their username, pass, courses etc.
+   */
+  @GetMapping("/login")
+  public User user(Principal principal) {
+    return userDatabase.findByUsername(principal.getName());
+  }
+
+  /**
+   * This request is handled when user submits their username & password
+   * User will be registered, data will be saved to database
+   *
+   * @param user is sent from a client
+   * @return response if user with such username doesn't exist. Encode pass & save to db
+   */
+  @PostMapping("/register")
+  public Response isRegistered(@RequestBody User user) {
+    if (userDatabase.findByUsername(user.getUsername()) == null) {
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+      User userForSaving = new User(user.getUsername(), user.getSchoolName(), user.getPassword(), user.getEmail());
+      userDatabase.save(userForSaving);
+
+      return Response.OK;
     }
 
-    /**
-     * This request is handled when user submits their username & password
-     * User will be registered, data will be saved to database
-     *
-     * @param user is sent from a client
-     * @return response if user with such username doesn't exist. Encode pass & save to db
-     */
-    @PostMapping("/register")
-    public Response isRegistered(@RequestBody User user)
-    {
-        if (userDatabase.findByUsername(user.getUsername()) == null)
-        {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-            User userForSaving = new User(user.getUsername(), user.getSchoolName(), user.getPassword(), user.getEmail());
-            userDatabase.save(userForSaving);
-
-            return Response.OK;
-        }
-
-        return Response.USER_EXISTS;
-    }
+    return Response.USER_EXISTS;
+  }
 }

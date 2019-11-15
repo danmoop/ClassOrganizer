@@ -11,32 +11,31 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Document(value = "users")
-public class User
-{
-    @Id
-    private String id;
+public class User {
 
-    private String username;
-    private String schoolName;
-    private String password;
-    private String email;
+  @Id
+  private String id;
 
-    private int semestersLeft;
+  private String username;
+  private String schoolName;
+  private String password;
+  private String email;
 
-    private List<Course> currentCourses;
-    private List<Course> completedCourses;
-    private List<Course> allCourses;
+  private int semestersLeft;
 
-    public User(String username, String schoolName, String password, String email)
-    {
-        this.username = username;
-        this.schoolName = schoolName;
-        this.password = password;
-        this.email = email;
-        this.semestersLeft = 6;
+  private List<Course> currentCourses;
+  private List<Course> completedCourses;
+  private List<Course> allCourses;
 
-        this.currentCourses = new ArrayList<>();
-        this.completedCourses = new ArrayList<>();
-        this.allCourses = new ArrayList<>();
-    }
+  public User(String username, String schoolName, String password, String email) {
+    this.username = username;
+    this.schoolName = schoolName;
+    this.password = password;
+    this.email = email;
+    this.semestersLeft = 6;
+
+    this.currentCourses = new ArrayList<>();
+    this.completedCourses = new ArrayList<>();
+    this.allCourses = new ArrayList<>();
+  }
 }

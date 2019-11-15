@@ -25,8 +25,9 @@ public class Config extends WebSecurityConfigurerAdapter
         another authentication using username & password.
     */
     private final String[] urls = {
-            "/login", "/user", "/addCourse", "/deleteCourse",
-            "/takeCourse", "/completeCourse", "/changeSemestersAmount"
+            "/auth/login", "/dashboard/addCourse", "/dashboard/deleteCourse",
+            "/dashboard/takeCourse", "/dashboard/completeCourse",
+            "/dashboard/changeSemestersAmount"
     };
 
     @Override
